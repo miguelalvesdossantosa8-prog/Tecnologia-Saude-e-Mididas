@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tecnologia, Saúde e Mídias</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-deep: #070a12;
+            --bg-card: #0f1524;
+            --accent-blue: #38bdf8;
+            --red-alert: #fb7185;
+            --green-safe: #34d399;
+            --text-main: #e2e8f0;
+            --text-dim: #94a3b8;
+            --border: #1e293b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        .hero {
+            padding: 50px 20px 30px;
+            text-align: center;
+            background: linear-gradient(180deg, #111827 0%, var(--bg-deep) 100%);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero h1 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-blue); margin-bottom: 5px; }
+        .hero h2 { font-size: 2.2rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 10px; }
+        .hero p { max-width: 650px; margin: 0 auto; color: var(--text-dim); font-size: 1rem; }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .data-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .text-content { flex: 1; }
+        .text-content h3 { font-size: 1.25rem; margin-bottom: 8px; color: #fff; border-left: 3px solid var(--accent-blue); padding-left: 8px; }
+        .text-content p { font-size: 0.9rem; color: var(--text-dim); text-align: justify; margin-bottom: 8px; }
+        .text-content .insight-box { font-size: 0.85rem; background: rgba(56, 189, 248, 0.05); padding: 8px 12px; border-radius: 6px; border-left: 2px solid var(--accent-blue); color: #cbd5e1; }
+
+        .chart-content { flex: 0 0 160px; height: 160px; position: relative; display: flex; flex-direction: column; justify-content: center; }
+
+        .paradox-section {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            padding: 25px;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(129, 140, 248, 0.2);
+            margin: 10px 0;
+        }
+
+        .paradox-section h2 { font-size: 1.5rem; margin-bottom: 10px; color: #fff; }
+        .paradox-section p { font-size: 1.1rem; max-width: 850px; margin: 0 auto; color: #cbd5e1; }
+
+        footer { text-align: center; padding: 30px; color: var(--text-dim); font-size: 0.8rem; border-top: 1px solid var(--border); margin-top: 40px; }
+
+        @media (max-width: 600px) {
+            .sections-grid { grid-template-columns: 1fr; }
+            .data-box { flex-direction: column; text-align: center; }
+            .chart-content { flex: none; width: 150px; height: 150px; margin: 0 auto; }
+            .hero h2 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <h1>Tecnologia, Saúde e Mídias</h1>
+        <h2>Tecnologia: Ferramenta ou Armadilha?</h2>
+        <p>Um diagnóstico visual sobre o comportamento geracional e seus reflexos na nossa saúde física e mental.</p>
+    </header>
+
+    <div class="container">
+        <div class="sections-grid">
+
+            <section class="data-box">
+                <div class="text-content">
+                    <h3>O Ritual do Despertar</h3>
+                    <p>A forma como começamos a manhã dita o nosso equilíbrio mental para o resto do dia. Enquanto os adultos constroem uma rotina real e analítica, os mais novos ativam picos imediatos de stresse ao bombardear o cérebro com notificações logo nos primeiros minutos na cama.</p>
+                    <div class="insight-box">
+                        58,6% dos jovens checam as redes ao abrir os olhos, contra 87,5% dos adultos que priorizam o pequeno-almoço e a higiene.
+                    </div>
+                </div>
+                <div class="chart-content">
+                    <canvas id="chartMatinal"></canvas>
+                </div>
+            </section>
+
+            <section class="data-box">
+                <div class="text-content">
+                    <h3>O Piloto Automático Digital</h3>
+                    <p>O consumo de mídia entre os adolescentes deixou de ser uma escolha consciente e passou a ser um impulso mecânico gerado pelo tédio. Capturados por algoritmos de rolagem infinita, eles abrem as aplicações por puro hábito, perdendo o controlo do próprio tempo.</p>
+                    <div class="insight-box">
+                        89,7% dos adolescentes admitem que entram nas mídias de forma totalmente involuntária e instintiva.
+                    </div>
+                </div>
+                <div class="chart-content">
+                    <canvas id="chartPiloto"></canvas>
+                </div>
+            </section>
+
+            <section class="data-box">
+                <div class="text-content">
+                    <h3>Nomofobia e Dependência</h3>
+                    <p>Ficar sem internet ou bateria já não é apenas um contratempo técnico para os nativos digitais, mas sim uma fonte de isolamento social instantâneo. Esse medo irracional aciona respostas psicológicas de irritabilidade que os adultos quase não partilham.</p>
+                    <div class="insight-box">
+                        72,4% dos jovens sentem ansiedade alta ou moderada ao desconectar, enquanto 68,8% dos adultos lidam com isso com calma.
+                    </div>
+                </div>
+                <div class="chart-content">
+                    <canvas id="chartNomofobia"></canvas>
+                </div>
+            </section>
+
+            <section class="data-box">
+                <div class="text-content">
+                    <h3>Infodemia e Filtro Crítico</h3>
+                    <p>Mesmo sendo o público que mais recebe notícias falsas sobre saúde e remédios na internet, os adultos seniores possuem um filtro de prudência muito rígido. Já os jovens, embora menos expostos, são muito mais influenciáveis por conselhos virtuais sem validação profissional.</p>
+                    <div class="insight-box">
+                        62,5% dos adultos recebem "curas milagrosas", mas 68,7% nunca mudam hábitos sem antes consultar um médico.
+                    </div>
+                </div>
+                <div class="chart-content">
+                    <canvas id="chartInfodemia"></canvas>
+                </div>
+            </section>
+
+            <section class="paradox-section">
+                <h2>O Paradoxo da Percepção</h2>
+                <p>
+                    Os dados revelam uma autocrítica clara da juventude: <strong>75,9% dos adolescentes</strong> reconhecem abertamente que a tecnologia <strong>atrapalha</strong> a sua saúde mental. No polo oposto, <strong>75% dos adultos</strong> afirmam que ela <strong>ajuda</strong> o quotidiano.
+                </p>
+            </section>
+
+            <section class="data-box">
+                <div class="text-content">
+                    <h3>A Sabotagem do Sono</h3>
+                    <p>A luz azul dos ecrãs à noite está a vencer a biologia humana. Ao levar os telemóveis para a cama, os jovens bloqueiam a produção natural de melatonina. Essa quebra na higiene do sono impede o descanso profundo e prejudica a regeneração da memória e do humor.</p>
+                    <div class="insight-box">
+                        89,7% dos jovens usam ecrãs antes de dormir e 69% perdem horas de descanso na madrugada de forma frequente.
+                    </div>
+                </div>
+                <div class="chart-content">
+                    <canvas id="chartSono"></canvas>
+                </div>
+            </section>
+
+            <section class="data-box">
+                <div class="text-content">
+                    <h3>O Cérebro "Always On"</h3>
+                    <p>Viver num estado de alerta constante, onde a atenção é fragmentada por notificações a cada minuto, esgotou a capacidade mental dos mais novos. Essa sobrecarga de dados contínua impede o cérebro de descansar, gerando uma fadiga intelectual severa.</p>
+                    <div class="insight-box">
+                        75,9% dos jovens sofrem com a sensação de mente sobrecarregada, enquanto 75% dos adultos raramente sentem essa estafa.
+                    </div>
+                </div>
+                <div class="chart-content">
+                    <canvas id="chartEstafa"></canvas>
+                </div>
+            </section>
+
+        </div>
+
+        <footer>
+            <p>© Eletiva de Saúde: Tecnologia, Saúde e Mídias</p>
+        </footer>
+    </div>
+
+    <script>
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } }
+        };
+
+        // Gráfico 1: Rotina Matinal
+        new Chart(document.getElementById('chartMatinal'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Jovens (Telas)', 'Adultos (Rotina Real)'],
+                datasets: [{
+                    data: [58.6, 87.5],
+                    backgroundColor: ['#fb7185', '#34d399'],
+                    borderColor: '#0f141e', borderWidth: 3
+                }]
+            },
+            options: chartOptions
+        });
+
+        // Gráfico 2: Piloto Automático
+        new Chart(document.getElementById('chartPiloto'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Inconsciente', 'Proposital'],
+                datasets: [{
+                    data: [89.7, 10.3],
+                    backgroundColor: ['#818cf8', '#1e293b'],
+                    borderColor: '#0f141e', borderWidth: 3
+                }]
+            },
+            options: chartOptions
+        });
+
+        // Gráfico 3: Nomofobia
+        new Chart(document.getElementById('chartNomofobia'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Jovens Ansiosos', 'Adultos Calmos'],
+                datasets: [{
+                    data: [72.4, 68.8],
+                    backgroundColor: ['#fb7185', '#34d399'],
+                    borderColor: '#0f141e', borderWidth: 3
+                }]
+            },
+            options: chartOptions
+        });
+
+        // Gráfico 4: Infodemia
+        new Chart(document.getElementById('chartInfodemia'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Adultos Prudentes', 'Adultos Expostos'],
+                datasets: [{
+                    data: [68.7, 62.5],
+                    backgroundColor: ['#34d399', '#818cf8'],
+                    borderColor: '#0f141e', borderWidth: 3
+                }]
+            },
+            options: chartOptions
+        });
+
+        // Gráfico 5: Sono
+        new Chart(document.getElementById('chartSono'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Perdem Sono', 'Dormem Bem'],
+                datasets: [{
+                    data: [69, 31],
+                    backgroundColor: ['#fb7185', '#1e293b'],
+                    borderColor: '#0f141e', borderWidth: 3
+                }]
+            },
+            options: chartOptions
+        });
+
+        // Gráfico 6: Estafa Mental
+        new Chart(document.getElementById('chartEstafa'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Sobrecarregada', 'Equilibrada'],
+                datasets: [{
+                    data: [75.9, 24.1],
+                    backgroundColor: ['#fb7185', '#34d399'],
+                    borderColor: '#0f141e', borderWidth: 3
+                }]
+            },
+            options: chartOptions
+        });
+    </script>
+</body>
+</html>
